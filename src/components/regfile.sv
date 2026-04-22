@@ -1,12 +1,12 @@
 // 32 by 64-bit RISC-V general purpose register file
 // 2 read and 1 write port + enable, x0 always 0
 module regfile (
-  input logic clk,
-  input logic [4:0] rs1, rs2,       // read port selects
-  input logic [4:0] ws,             // write port select
-  input logic reg_write,            // write enable
-  input logic [63:0] wd,            // write port input
-  output logic [63:0] rd1, rd2      // read port outputs
+  input  logic clk,
+  input  logic [4:0]  rs1, rs2,       // read port selects
+  input  logic [4:0]  ws,             // write port select
+  input  logic        reg_write,      // write enable
+  input  logic [63:0] wd,            // write port input
+  output logic [63:0] rd1, rd2       // read port outputs
 );
 
   logic [31:0] enables;  // write enable decoded to 32 bits
@@ -24,7 +24,7 @@ module regfile (
   assign data[0] = 64'b0;
 
   // select which register to output for each read port
-  mux64x32_1 mux1 (.in(data), .sel(rs1), .out(rd1));
-  mux64x32_1 mux2 (.in(data), .sel(rs2), .out(rd2));
+  muxWxD_1 #(.WIDTH(64), .DEPTH(32)) mux1 (.in(data), .sel(rs1), .out(rd1));
+  muxWxD_1 #(.WIDTH(64), .DEPTH(32)) mux2 (.in(data), .sel(rs2), .out(rd2));
 
 endmodule  // regfile

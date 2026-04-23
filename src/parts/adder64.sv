@@ -12,7 +12,7 @@ module adder64 (
   logic g0_raw;
   and ag0 (g0_raw,  a[0], b[0]);
   or  op0 (P[0][0], a[0], b[0]);
-  pg_cell cin_cell (.ghi (g0_raw), .phi (P[0][0]), .glo (cin), .plo (1'b0), .gout(G[0][0]), .pout());
+  carrycell cc0 (.ghi (g0_raw), .phi (P[0][0]), .glo (cin), .plo (1'b0), .gout(G[0][0]), .pout());
   // bits 1-63 — normal
   genvar i;
   generate
@@ -29,7 +29,7 @@ module adder64 (
       for (i = 0; i < 64; i++) begin : eachBit
         if (i >= (1 << (s-1))) begin : hasNeighbor
           // combine with bit (i - 2^(s-1))
-          pg_cell pg (
+          carrycell cc (
             .ghi (G[s-1][i]),
             .phi (P[s-1][i]),
             .glo (G[s-1][i - (1 << (s-1))]),
@@ -38,7 +38,7 @@ module adder64 (
             .pout(P[s][i])
           );
         end else begin : passThrough
-          // no lower neighbor at this distance — pass through unchanged
+          // pass through
           assign G[s][i] = G[s-1][i];
           assign P[s][i] = P[s-1][i];
         end
@@ -61,7 +61,7 @@ module adder64 (
   // sum bits
   generate
     for (i = 0; i < 64; i++) begin : eachSum
-      sum_cell sc (.a(a[i]), .b(b[i]), .cin(carry[i]), .s(sum[i]));
+      sumcell sc (.a(a[i]), .b(b[i]), .cin(carry[i]), .s(sum[i]));
     end
   endgenerate
 

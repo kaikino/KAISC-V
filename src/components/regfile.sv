@@ -11,7 +11,7 @@ module regfile (
 );
 
   logic [31:0] enables;  // write enable decoded to 32 bits
-  dec5_32 dec (.in(ws), .enable(reg_write), .out(enables));
+  dec #(.DEPTH(32)) dec (.in(ws), .enable(reg_write), .out(enables));  // 5:32 decoder
 
   logic [31:0][63:0] data;
   genvar i;
@@ -25,7 +25,7 @@ module regfile (
   assign data[0] = 64'b0;
 
   // select which register to output for each read port
-  muxWxD_1 #(.WIDTH(64), .DEPTH(32)) mux1 (.in(data), .sel(rs1), .out(rd1));
-  muxWxD_1 #(.WIDTH(64), .DEPTH(32)) mux2 (.in(data), .sel(rs2), .out(rd2));
+  mux #(.WIDTH(64), .DEPTH(32)) mux1 (.in(data), .sel(rs1), .out(rd1));
+  mux #(.WIDTH(64), .DEPTH(32)) mux2 (.in(data), .sel(rs2), .out(rd2));
 
 endmodule  // regfile

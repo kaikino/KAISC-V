@@ -1,7 +1,7 @@
 // log2(D):D decoder
 // Depth must be a power of 2, and sel is log2(Depth) bits wide
 
-module dec_D #(
+module dec #(
   parameter DEPTH = 32,
   parameter SEL   = $clog2(DEPTH)
 ) (
@@ -28,4 +28,4 @@ module dec_D #(
 
   assign out = level[SEL][DEPTH-1:0];
 
-endmodule  // dec_D
+endmodule  // dec

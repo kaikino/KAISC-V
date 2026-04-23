@@ -21,7 +21,7 @@ module dec #(
     for (s = 0; s < SEL; s++) begin : eachStage
       // at stage s there are 2^s active dec1_2s
       for (k = 0; k < (1 << s); k++) begin : eachDec
-        dec1_2 d (.in(in[s]), .enable(level[s][k]), .out(level[s+1][k*2 +: 2]));
+        dec1_2 d (.in(in[SEL-1-s]), .enable(level[s][k]), .out(level[s+1][k*2 +: 2]));
       end
     end
   endgenerate

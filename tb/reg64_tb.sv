@@ -19,26 +19,26 @@ module reg64_tb();
 
   initial begin
     // enable off, should not write
-    writeEnable = 0;
-    dataIn = 64'hAAAAAAAAAAAAAAAA;
+    enable = 0;
+    in = 64'hAAAAAAAAAAAAAAAA;
     @(posedge clk);
 
     // enable on, should write
-    writeEnable = 1;
+    enable = 1;
     @(posedge clk);
 
     // enable off, should not clear
-    writeEnable = 0;
-    dataIn = 64'h0000000000000000;
+    enable = 0;
+    in = 64'h0000000000000000;
     @(posedge clk);
 
     // enable on, should write
-    writeEnable = 1;
-    dataIn = 64'h123456789ABCDEF0;
+    enable = 1;
+    in = 64'h123456789ABCDEF0;
     @(posedge clk);
 
     // enable on, should write
-    dataIn = 64'h1111111111111111;
+    in = 64'h1111111111111111;
     @(posedge clk);
     @(posedge clk);
 

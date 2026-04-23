@@ -9,7 +9,7 @@ module dec1_2 (
 );
 
   logic nin;
-  not n (nin,in);
+  not n  (nin,in);
   and a0 (out[0], enable, nin);
   and a1 (out[1], enable, in);
 

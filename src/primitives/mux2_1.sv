@@ -8,9 +8,9 @@ module mux2_1 (
 );
 
   logic nsel, out0, out1;
-  not n (nsel, sel);
+  not n  (nsel, sel);
   and a0 (out0, i0, nsel);
   and a1 (out1, i1, sel);
-  or  o (out, out1, out0);
+  or  o  (out, out1, out0);
 
 endmodule  // mux2_1

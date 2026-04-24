@@ -19,9 +19,9 @@ module dec #(
   genvar l, k;
   generate
     for (l = 0; l < SEL; l++) begin : eachLevel
-      // at level s there are 2^l active dec1_2s
+      // at level l there are 2^l active dec1_2s
       for (k = 0; k < (1 << l); k++) begin : eachDec
-        dec1_2 d (.in(in[l]), .enable(level[l][k]), .out(level[l+1][k*2 +: 2]));
+        dec1_2 d (.in(in[SEL-1-s]), .enable(level[l][k]), .out(level[l+1][k*2 +: 2]));
       end
     end
   endgenerate

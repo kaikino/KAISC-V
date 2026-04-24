@@ -8,7 +8,7 @@ module mux32_1_tb();
   logic [31:0] in;
   logic [4:0] sel;
 
-  mux #(.WIDTH=1) dut (.in, .sel, .out);
+  mux #(.WIDTH(1)) dut (.in, .sel, .out);
 
   integer i;
   initial begin

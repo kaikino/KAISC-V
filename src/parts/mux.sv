@@ -11,7 +11,7 @@ module mux #(
   output logic [WIDTH-1:0]            out
 );
 
-  genvar i, j, s, k;
+  genvar i, j, l, k;
   generate
     for (i = 0; i < WIDTH; i++) begin : eachBit
       // build SEL-deep tree of mux2_1s
@@ -21,9 +21,9 @@ module mux #(
         assign level[0][j] = in[j][i];
       end
 
-      for (s = 0; s < SEL; s++) begin : eachLevel
-        for (k = 0; k < DEPTH >> (s+1); k++) begin : eachPair
-          mux2_1 m (.i0 (level[s][k*2]), .i1 (level[s][k*2+1]), .sel(sel[s]), .out(level[s+1][k]));
+      for (l = 0; l < SEL; l++) begin : eachLevel
+        for (k = 0; k < DEPTH >> (l+1); k++) begin : eachPair
+          mux2_1 m (.i0 (level[l][k*2]), .i1 (level[l][k*2+1]), .sel(sel[l]), .out(level[l+1][k]));
         end
       end
 

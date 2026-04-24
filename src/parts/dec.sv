@@ -10,18 +10,18 @@ module dec #(
   output logic [DEPTH-1:0] out
 );
 
-  // level[s] holds the enable lines entering stage s
+  // level[l] holds the enable lines entering stage s
   logic [DEPTH-1:0] level [SEL+1];
 
   // initialize enable wire
   assign level[0][0] = enable;
 
-  genvar s, k;
+  genvar l, k;
   generate
-    for (s = 0; s < SEL; s++) begin : eachStage
-      // at stage s there are 2^s active dec1_2s
-      for (k = 0; k < (1 << s); k++) begin : eachDec
-        dec1_2 d (.in(in[s]), .enable(level[s][k]), .out(level[s+1][k*2 +: 2]));
+    for (l = 0; l < SEL; l++) begin : eachLevel
+      // at level s there are 2^l active dec1_2s
+      for (k = 0; k < (1 << l); k++) begin : eachDec
+        dec1_2 d (.in(in[l]), .enable(level[l][k]), .out(level[l+1][k*2 +: 2]));
       end
     end
   endgenerate

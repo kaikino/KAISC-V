@@ -4,7 +4,8 @@ module adder64 (
   input  logic [63:0] a, b,
   input  logic        cin,
   output logic [63:0] sum,
-  output logic        cout
+  output logic        cout,
+  output logic        overflow
 );
 
   // level 0: bit-level generate and propagate
@@ -23,24 +24,24 @@ module adder64 (
   endgenerate
 
   // levels 1-6: prefix tree
-  genvar s;
+  genvar l;
   generate
-    for (s = 1; s <= 6; s++) begin : eachlevel
+    for (l = 1; l <= 6; l++) begin : eachlevel
       for (i = 0; i < 64; i++) begin : eachBit
-        if (i >= (1 << (s-1))) begin : hasNeighbor
-          // combine with bit (i - 2^(s-1))
+        if (i >= (1 << (l-1))) begin
+          // combine with bit (i - 2^(l-1))
           carrycell cc (
-            .ghi (G[s-1][i]),
-            .phi (P[s-1][i]),
-            .glo (G[s-1][i - (1 << (s-1))]),
-            .plo (P[s-1][i - (1 << (s-1))]),
-            .gout(G[s][i]),
-            .pout(P[s][i])
+            .ghi (G[l-1][i]),
+            .phi (P[l-1][i]),
+            .glo (G[l-1][i - (1 << (l-1))]),
+            .plo (P[l-1][i - (1 << (l-1))]),
+            .gout(G[l][i]),
+            .pout(P[l][i])
           );
-        end else begin : passThrough
+        end else begin
           // pass through
-          assign G[s][i] = G[s-1][i];
-          assign P[s][i] = P[s-1][i];
+          assign G[l][i] = G[l-1][i];
+          assign P[l][i] = P[l-1][i];
         end
       end
     end
@@ -64,5 +65,7 @@ module adder64 (
       sumcell sc (.a(a[i]), .b(b[i]), .cin(carry[i]), .s(sum[i]));
     end
   endgenerate
+
+  xor xo (overflow, G[6][62], cout);
 
 endmodule  // adder64
